@@ -1,2 +1,2 @@
-![1 pencatatan](image.png)
-![2 riwayat](image-1.png)
+![presensi](image-2.png)
+![riwayat](image-3.png)
