@@ -12,11 +12,15 @@ class KehadiranRecord {
   String date;
   int presentCount;
   int absentCount;
+  List<String> presentStudents;
+  List<String> absentStudents;
 
   KehadiranRecord({
     required this.date,
     required this.presentCount,
     required this.absentCount,
+    required this.presentStudents,
+    required this.absentStudents,
   });
 }
 
@@ -31,8 +35,16 @@ class KehadiranProvider with ChangeNotifier {
 
   void saveKehadiran() {
     final date = DateFormat('dd MMM yyyy').format(DateTime.now());
-    final presentCount = students.where((s) => s.isPresent).length;
-    final absentCount = students.length - presentCount;
+    final presentStudents = students
+        .where((s) => s.isPresent)
+        .map((s) => s.name)
+        .toList();
+    final absentStudents = students
+        .where((s) => !s.isPresent)
+        .map((s) => s.name)
+        .toList();
+    final presentCount = presentStudents.length;
+    final absentCount = absentStudents.length;
 
     history.insert(
       0,
@@ -40,9 +52,12 @@ class KehadiranProvider with ChangeNotifier {
         date: date,
         presentCount: presentCount,
         absentCount: absentCount,
+        presentStudents: presentStudents,
+        absentStudents: absentStudents,
       ),
     );
 
+    // Resetkan status kehadiran
     for (var student in students) {
       student.isPresent = false;
     }
